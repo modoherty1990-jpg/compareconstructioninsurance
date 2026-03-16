@@ -57,12 +57,12 @@ export default async function GuidePage({ params }) {
           </h1>
 
           <p style={{
-            fontSize: '0.8rem',
-            color: '#64748b',
-            marginBottom: '1.5rem',
-          }}>
-            Last updated: {dateDisplay}
-          </p>
+  fontSize: '0.8rem',
+  color: '#64748b',
+  marginBottom: '1.5rem',
+}}>
+  By {guide.author || 'The CCI Team'} · Last updated: {dateDisplay}
+</p>
 
           {guide.description && (
             <p style={{
