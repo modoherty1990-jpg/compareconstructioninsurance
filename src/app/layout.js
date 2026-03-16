@@ -39,9 +39,75 @@ export const metadata = {
   },
 }
 
+const schemaOrg = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://www.compareconstructioninsurance.com.au/#website',
+      url: 'https://www.compareconstructioninsurance.com.au',
+      name: 'Compare Construction Insurance',
+      description: 'Australia\'s specialist construction insurance broker comparison platform',
+      inLanguage: 'en-AU',
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://www.compareconstructioninsurance.com.au/#organization',
+      name: 'Compare Construction Insurance',
+      url: 'https://www.compareconstructioninsurance.com.au',
+      description: 'Connecting Australian builders, tradies and contractors with specialist insurance brokers.',
+      areaServed: 'AU',
+      serviceType: 'Insurance Broker Comparison',
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'Is this service really free?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes — completely free for tradies and builders. We may receive a referral fee from brokers when you make contact, but this never influences your match results.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How do you match me with brokers?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'We score every broker against your trade type, cover needed, business size and state. Only brokers who score above a minimum threshold appear in your results.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Do you provide financial advice?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'No. This is a filtering and referral tool, not a financial advice service. Contact brokers directly for advice specific to your situation.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Are all brokers licensed?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Every broker listed is either an AFSL holder or an authorised representative of an AFSL holder. You can verify credentials at moneysmart.gov.au.',
+          },
+        },
+      ],
+    },
+  ],
+}
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${plusJakarta.variable} ${dmSans.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }}
+        />
+      </head>
       <body>{children}</body>
     </html>
   )

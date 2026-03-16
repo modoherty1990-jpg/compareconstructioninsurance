@@ -118,3 +118,26 @@ section { padding: 100px 5%; }
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(0.8); }
 }
+
+@media (max-width: 767px) {
+  section {
+    padding: 60px 5%;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+
+  .section-sub {
+    font-size: 0.95rem;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 14px 24px;
+    font-size: 0.9rem;
+  }
+
+  .hero-stats {
+    display: none !important;
+  }
+}

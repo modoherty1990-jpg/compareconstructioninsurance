@@ -12,6 +12,7 @@ export default function Hero() {
       position: 'relative',
       overflow: 'hidden',
     }}>
+
       <div style={{
         position: 'absolute', top: '-20%', right: '-10%',
         width: '700px', height: '700px',
@@ -39,7 +40,7 @@ export default function Hero() {
       </div>
 
       <h1 style={{
-        fontSize: 'clamp(2.4rem, 5vw, 4.2rem)',
+        fontSize: 'clamp(2rem, 5vw, 4.2rem)',
         fontWeight: 800,
         lineHeight: 1.08,
         letterSpacing: '-0.04em',
@@ -52,7 +53,7 @@ export default function Hero() {
       </h1>
 
       <p style={{
-        fontSize: '1.2rem',
+        fontSize: 'clamp(1rem, 2vw, 1.2rem)',
         color: '#cbd5e1',
         fontWeight: 300,
         maxWidth: '540px',
@@ -65,7 +66,7 @@ export default function Hero() {
       </p>
 
       <div style={{
-        display: 'flex', gap: '2rem', marginTop: '2.5rem',
+        display: 'flex', gap: '1rem', marginTop: '2.5rem',
         flexWrap: 'wrap',
         animation: 'fadeUp 0.6s 0.3s ease both',
       }}>
@@ -102,7 +103,8 @@ export default function Hero() {
         <a href="#brokers" className="btn-secondary">Browse all brokers</a>
       </div>
 
-      <div style={{
+      {/* Stats — desktop only */}
+      <div className="hero-stats" style={{
         position: 'absolute', right: '5%', bottom: '10%',
         display: 'flex', flexDirection: 'column', gap: '1rem',
         animation: 'fadeLeft 0.8s 0.5s ease both',
