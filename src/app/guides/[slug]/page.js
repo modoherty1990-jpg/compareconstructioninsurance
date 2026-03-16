@@ -23,7 +23,7 @@ export async function generateMetadata({ params }) {
 export default async function GuidePage({ params }) {
   const { slug } = await params
 
-  const { data: guide, error } = await supabase
+  const { data: guide } = await supabase
     .from('guides')
     .select('*')
     .eq('slug', slug)
@@ -31,6 +31,12 @@ export default async function GuidePage({ params }) {
     .single()
 
   if (!guide) notFound()
+
+  const dateDisplay = new Date(guide.updated_at || guide.created_at).toLocaleDateString('en-AU', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
 
   return (
     <>
@@ -45,10 +51,18 @@ export default async function GuidePage({ params }) {
           <h1 style={{
             fontSize: 'clamp(1.8rem, 3.5vw, 2.6rem)',
             fontWeight: 800, letterSpacing: '-0.04em',
-            lineHeight: 1.15, marginBottom: '1.5rem',
+            lineHeight: 1.15, marginBottom: '1rem',
           }}>
             {guide.title}
           </h1>
+
+          <p style={{
+            fontSize: '0.8rem',
+            color: '#64748b',
+            marginBottom: '1.5rem',
+          }}>
+            Last updated: {dateDisplay}
+          </p>
 
           {guide.description && (
             <p style={{
