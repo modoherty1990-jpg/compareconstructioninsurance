@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
+console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
 
 const TOTAL_STEPS = 5
 const MIN_SCORE = 3
