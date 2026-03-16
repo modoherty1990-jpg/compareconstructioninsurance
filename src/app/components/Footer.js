@@ -36,6 +36,15 @@ export default function Footer() {
             Australia's specialist construction insurance broker comparison platform.
             Connecting builders, tradies and contractors with the right broker.
           </p>
+          <a href="mailto:hello@compareconstructioninsurance.com.au" style={{
+  fontSize: '0.875rem', color: '#94a3b8',
+  textDecoration: 'none', display: 'block', marginBottom: '1rem',
+}}
+onMouseEnter={e => e.target.style.color = '#cbd5e1'}
+onMouseLeave={e => e.target.style.color = '#94a3b8'}
+>
+  hello@compareconstructioninsurance.com.au
+</a>
           <p style={{ fontSize: '0.75rem', color: '#475569', lineHeight: 1.6 }}>
             compareconstructioninsurance.com.au is a comparison and referral platform.
             We do not provide financial advice.
