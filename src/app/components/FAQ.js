@@ -3,32 +3,36 @@ import { useState } from 'react'
 
 const FAQS = [
   {
-    q: 'Is this service really free?',
-    a: 'Yes — completely free for tradies and builders. We may receive a referral fee from brokers when you make contact, but this never influences your match results. You will never pay more for your insurance by using this service.',
+    q: 'Is this really free to use?',
+    a: 'Yes — it\'s free for tradies and builders. We may receive a referral fee from a broker if you end up working with them, but this never affects your match results and you won\'t pay a cent more for your insurance.',
   },
   {
     q: 'How do you match me with brokers?',
-    a: 'We score every broker in our directory against your answers — trade type, cover needed, business size, revenue and state. Only brokers who score above a minimum threshold appear in your results. You can read exactly how the scoring works on our how matching works page.',
+    a: 'We run your answers through our matching system, which scores every broker against your trade type, cover needs, business size and state. You only see brokers who scored above our minimum threshold — so they\'re actually relevant to your situation.',
   },
   {
-    q: 'Do you provide financial advice?',
-    a: 'No. This is a filtering and referral tool, not a financial advice service. We help you find brokers who are relevant to your profile — the broker you contact will assess your specific needs and provide appropriate advice. Always read a broker\'s Financial Services Guide before proceeding.',
+    q: 'Is this financial advice?',
+    a: 'No. This tool helps you find licensed brokers who are relevant to your profile — it\'s not financial advice. The broker you contact is the one who\'ll assess your situation properly. Always read their Financial Services Guide before making any decisions.',
   },
   {
-    q: 'What if I\'m not sure what cover I need?',
-    a: 'Select "Not sure" in the cover step and we\'ll match you with brokers who offer broad construction coverage and can advise you on what\'s right for your trade. That\'s exactly what a good broker is for.',
+    q: 'I don\'t know what insurance I need — what should I do?',
+    a: 'Select \'Not sure\' in the cover step and we\'ll match you with brokers who carry a broad range of construction covers and can work out what\'s right for your trade. That\'s exactly what a good broker is there for.',
   },
   {
-    q: 'Are all brokers licensed?',
-    a: 'Every broker listed is either an AFSL holder or an authorised representative of an AFSL holder. You can verify any broker\'s credentials at moneysmart.gov.au using their name or AFSL number.',
+    q: 'Are all the brokers on this site licensed?',
+    a: 'Yes. Every broker listed is either an AFSL holder or an authorised representative, however we recommend you verify any broker\'s licence at moneysmart.gov.au before proceeding.',
   },
   {
     q: 'How quickly will a broker get back to me?',
-    a: 'That depends on the broker — most aim to respond within one business day. If you need cover urgently, mention that when you make contact. Many brokers can arrange same-day certificates of currency for standard covers.',
+    a: 'Most brokers aim to get back to you within one business day. If you need cover urgently — like a certificate of currency before you start a job tomorrow — mention it when you make contact. Most can sort same-day cover for standard policies.',
   },
   {
-    q: 'Can I compare actual policy prices on this site?',
-    a: 'Not yet — we match you to specialist brokers rather than comparing policy prices directly. A specialist broker will often get you a better price than any online comparison tool because they can negotiate with underwriters on your behalf.',
+    q: 'Can I see insurance prices before I contact a broker?',
+    a: 'Not yet. We match you to specialist brokers rather than showing live policy prices.',
+  },
+  {
+    q: 'Do I need public liability insurance to work on a construction site?',
+    a: 'In most cases yes. Most commercial sites won\'t let you through the gate without it, and most contracts require it before you sign. For some trades like electricians and plumbers in certain states, it\'s also a legal requirement to hold your licence. If you\'re not sure what applies to your trade and state, use our matching tool and a specialist broker can advise you.',
   },
 ]
 
@@ -40,7 +44,7 @@ export default function FAQ() {
       <div className="section-label">FAQ</div>
       <h2 className="section-title">Common questions</h2>
       <p className="section-sub">
-        Everything you need to know before you compare.
+        Quick answers to the questions we get asked most.
       </p>
 
       <div style={{

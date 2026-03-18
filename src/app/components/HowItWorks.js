@@ -5,25 +5,25 @@ export default function HowItWorks() {
       num: '01',
       icon: '📋',
       title: 'Tell us about your trade',
-      desc: 'Answer 5 quick questions about your trade type, cover needed, business size and location.',
+      desc: 'Tell us your trade, what cover you need, how big your business is and where you\'re based. Takes about a minute.',
     },
     {
       num: '02',
       icon: '🔍',
       title: 'We match you to specialists',
-      desc: 'Our algorithm scores every broker against your profile and surfaces the closest matches.',
+      desc: 'We run your answers against every broker in our directory and pull out the ones who know your trade and cover your state.',
     },
     {
       num: '03',
       icon: '📞',
       title: 'Contact your broker directly',
-      desc: "Call or visit the broker's website directly. No middleman, no markup, no obligation.",
+      desc: 'Call them or go straight to their website. No one in the middle. No extra cost. No pressure.',
     },
     {
       num: '04',
       icon: '✅',
       title: 'Get covered',
-      desc: 'Your broker arranges the right cover for your trade, size and state requirements.',
+      desc: 'Your broker sorts the right cover for your trade, your team and your state. You get back on the tools.',
     },
   ]
 
@@ -34,9 +34,9 @@ export default function HowItWorks() {
       borderBottom: '1px solid rgba(255,255,255,0.08)',
     }}>
       <div style={{ marginBottom: '1rem' }} className="section-label">How it works</div>
-      <h2 className="section-title">Four steps to the right broker</h2>
+      <h2 className="section-title">How it works — four steps</h2>
       <p className="section-sub">
-        No forms to fill in triplicate. No waiting for callbacks. Just a fast, honest match.
+        Answer five questions. We match you. You call the broker. Done.
       </p>
 
       <div style={{

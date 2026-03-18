@@ -1,35 +1,36 @@
 'use client'
+
 export default function WhyUs() {
   const cards = [
     {
       icon: '🛡️',
       title: 'Licensed brokers only',
-      desc: 'Every broker listed is either an AFSL holder or an authorised representative of an AFSL holder. You can verify any broker\'s licence at moneysmart.gov.au.',
+      desc: 'Every broker on this site is licensed under an AFSL. You can check any broker\'s credentials at moneysmart.gov.au.',
     },
     {
       icon: '🎯',
       title: 'Specialist matching',
-      desc: 'We score brokers against your trade type, cover needs, business size and state. You only see brokers who are genuinely relevant to your profile.',
+      desc: 'We score brokers against your trade, your cover needs, your team size and your state. You only see brokers who are actually relevant to your work — not just the nearest option.',
     },
     {
       icon: '💰',
       title: 'Completely free',
-      desc: 'This service costs you nothing. We may receive a referral fee from brokers — this never influences your match results. Rankings are always based on fit, not fees.',
+      desc: 'It costs you nothing to use this site. We may receive a fee from brokers if you end up working with them — but it never affects your match results. Your ranking is based on fit, not who pays us more.',
     },
     {
       icon: '🔒',
       title: 'Your data is protected',
-      desc: 'We collect only what\'s needed to match you. We don\'t sell your data and you can request deletion at any time under the Australian Privacy Act.',
+      desc: 'We only collect what we need to match you to a broker. We don\'t sell your data to anyone.',
     },
     {
       icon: '⚡',
       title: 'Fast and no obligation',
-      desc: 'Five questions, 60 seconds, no account required. Contact brokers directly — there\'s no pressure and no obligation to proceed.',
+      desc: 'Five questions. 60 seconds. No account, no signup, no pressure. Contact the broker directly — you\'re under no obligation to go any further.',
     },
     {
       icon: '🇦🇺',
       title: 'Australia-wide',
-      desc: 'We cover all states and territories. Many brokers on our platform operate nationally, with specialists available for state-specific requirements like home warranty.',
+      desc: 'We cover every state and territory. Most brokers on our platform work nationally — and we\'ve got specialists for state-specific requirements.',
     },
   ]
 
@@ -38,7 +39,7 @@ export default function WhyUs() {
       <div className="section-label">Why use us</div>
       <h2 className="section-title">Built for tradies and builders</h2>
       <p className="section-sub">
-        Most comparison sites are built for consumers. This one is built for the construction industry.
+        Most comparison sites don't know the difference between a builder and a subcontractor. This one does.
       </p>
 
       <div style={{

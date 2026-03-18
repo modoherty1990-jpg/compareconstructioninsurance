@@ -36,11 +36,11 @@ export default function Hero() {
           background: '#f59e0b', borderRadius: '50%',
           animation: 'pulse 2s infinite',
         }} />
-        Australia's Specialist Construction Insurance Comparison
+        Free Broker Matching for Australian Tradies and Builders
       </div>
 
       <h1 style={{
-        fontSize: 'clamp(2rem, 5vw, 4.2rem)',
+        fontSize: 'clamp(2.4rem, 5vw, 4.2rem)',
         fontWeight: 800,
         lineHeight: 1.08,
         letterSpacing: '-0.04em',
@@ -48,12 +48,12 @@ export default function Hero() {
         animation: 'fadeUp 0.6s 0.1s ease both',
         color: '#ffffff',
       }}>
-        Find the right insurance broker for your{' '}
-        <em style={{ fontStyle: 'normal', color: '#f59e0b' }}>trade</em>
+        Find the right construction insurance broker for your{' '}
+        <em style={{ fontStyle: 'normal', color: '#f59e0b' }}>trade — matched in 60 seconds</em>
       </h1>
 
       <p style={{
-        fontSize: 'clamp(1rem, 2vw, 1.2rem)',
+        fontSize: '1.2rem',
         color: '#cbd5e1',
         fontWeight: 300,
         maxWidth: '540px',
@@ -61,20 +61,19 @@ export default function Hero() {
         marginTop: '1.5rem',
         animation: 'fadeUp 0.6s 0.2s ease both',
       }}>
-        Compare specialist brokers for builders, tradies and contractors.
-        Answer 5 quick questions — get matched in 60 seconds. Free service.
+        Tell us your trade, what cover you need and where you're based. We match you to specialist construction insurance brokers who actually know your industry. Takes about a minute. Costs nothing.
       </p>
 
       <div style={{
-        display: 'flex', gap: '1rem', marginTop: '2.5rem',
+        display: 'flex', gap: '2rem', marginTop: '2.5rem',
         flexWrap: 'wrap',
         animation: 'fadeUp 0.6s 0.3s ease both',
       }}>
         {[
           'Licensed brokers only',
-          'Free to compare',
+          '100% free',
           'No obligation',
-          'Australia-wide',
+          'All states covered',
         ].map(item => (
           <div key={item} style={{
             display: 'flex', alignItems: 'center', gap: '8px',
@@ -99,12 +98,11 @@ export default function Hero() {
         display: 'flex', gap: '1rem', flexWrap: 'wrap',
         animation: 'fadeUp 0.6s 0.4s ease both',
       }}>
-        <a href="#compare" className="btn-primary">Compare Now →</a>
+        <a href="#compare" className="btn-primary">Find My Broker →</a>
         <a href="#brokers" className="btn-secondary">Browse all brokers</a>
       </div>
 
-      {/* Stats — desktop only */}
-      <div className="hero-stats" style={{
+      <div style={{
         position: 'absolute', right: '5%', bottom: '10%',
         display: 'flex', flexDirection: 'column', gap: '1rem',
         animation: 'fadeLeft 0.8s 0.5s ease both',
@@ -112,7 +110,7 @@ export default function Hero() {
         {[
           { num: '17+', label: 'Specialist brokers' },
           { num: '60s', label: 'To get matched' },
-          { num: 'Free', label: 'No cost ever' },
+          { num: 'Free', label: 'Always free' },
         ].map(stat => (
           <div key={stat.label} style={{
             background: '#1a2733',
