@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
-console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL)
 
 const TOTAL_STEPS = 5
 const MIN_SCORE = 3
@@ -10,34 +9,34 @@ const STEPS = [
   {
     id: 1,
     question: 'What best describes your business?',
-    hint: 'Select the option that closest matches your work',
+    hint: 'Pick the one that\'s closest to what you do',
     field: 'trade',
     multi: false,
     options: [
       { value: 'builder', label: 'Licensed builder', help: 'Residential or commercial construction' },
-      { value: 'tradie', label: 'Sole trader / tradie', help: 'Self-employed, working on the tools' },
+      { value: 'tradie', label: 'Sole trader / tradie', help: 'Self-employed, on the tools' },
       { value: 'subcontractor', label: 'Subcontractor', help: 'Working under a head contractor' },
       { value: 'civil', label: 'Civil contractor', help: 'Roads, earthworks, infrastructure' },
       { value: 'consultant', label: 'Design / consultant', help: 'Architect, engineer, project manager' },
       { value: 'developer', label: 'Property developer', help: 'Developing land or buildings' },
       { value: 'owner_builder', label: 'Owner builder', help: 'Building your own home' },
-      { value: 'not_sure', label: 'Not sure', help: 'Help me figure it out' },
+      { value: 'not_sure', label: 'Not sure', help: 'Help me work it out' },
     ],
   },
   {
     id: 2,
     question: 'What cover do you need?',
-    hint: "Select all that apply — we'll match brokers who cover everything you need",
+    hint: 'Tick everything you need — we\'ll find brokers who cover the lot',
     field: 'cover',
     multi: true,
     options: [
-      { value: 'public_liability', label: 'Public liability', help: 'Covers injury or damage caused to others' },
-      { value: 'contract_works', label: 'Contract works', help: 'Covers damage to the project under construction' },
-      { value: 'professional_indemnity', label: 'Professional indemnity', help: 'Covers errors in advice or design' },
+      { value: 'public_liability', label: 'Public liability', help: 'Covers you if someone gets hurt or their property is damaged' },
+      { value: 'contract_works', label: 'Contract works', help: 'Covers damage to the build while it\'s in progress' },
+      { value: 'professional_indemnity', label: 'Professional indemnity', help: 'Covers errors in your advice, design or certification' },
       { value: 'tools', label: 'Tools & equipment', help: 'Covers theft or damage to your tools' },
-      { value: 'workers_comp', label: 'Workers compensation', help: 'Mandatory if you employ staff' },
-      { value: 'home_warranty', label: 'Home warranty', help: 'Required for residential builds in most states' },
-      { value: 'not_sure', label: 'Not sure', help: "Show me what's relevant for my trade" },
+      { value: 'workers_comp', label: 'Workers compensation', help: 'Required if you have employees — apprentices included' },
+      { value: 'home_warranty', label: 'Home warranty', help: 'Required for residential builds above certain contract values' },
+      { value: 'not_sure', label: 'Not sure', help: 'Show me what\'s relevant for my trade' },
     ],
   },
   {
@@ -55,8 +54,8 @@ const STEPS = [
   },
   {
     id: 4,
-    question: "What's your annual revenue?",
-    hint: "An estimate is fine — this helps match you to brokers who work with your size",
+    question: 'What\'s your annual revenue?',
+    hint: 'A rough estimate is fine — helps us match you to brokers who work with your size',
     field: 'revenue',
     multi: false,
     options: [
@@ -69,7 +68,7 @@ const STEPS = [
   {
     id: 5,
     question: 'Which state are you based in?',
-    hint: 'Some brokers specialise in specific states and home warranty requirements vary by state',
+    hint: 'Insurance requirements vary by state — this helps us find brokers who know your market',
     field: 'state',
     multi: false,
     options: [
@@ -92,23 +91,21 @@ function scoreBroker(broker, formData) {
   const size = formData.size
   const state = formData.state
 
-  const tradeTags = Array.isArray(broker.trade_tags) ? broker.trade_tags : []
-  const coverTags = Array.isArray(broker.cover_tags) ? broker.cover_tags : []
-  const sizeTags = Array.isArray(broker.size_tags) ? broker.size_tags : []
-
-  if (trade) {
-    if (tradeTags.includes(trade)) score += 4
+  if (trade && broker.trade_tags) {
+    if (Array.isArray(broker.trade_tags) && broker.trade_tags.includes(trade)) score += 4
     else if (trade === 'not_sure') score += 2
   }
 
-  if (cover.length > 0) {
-    const matched = cover.filter(c => coverTags.includes(c))
-    score += Math.min(matched.length * 2, 4)
+  if (cover.length > 0 && broker.cover_tags) {
+    if (Array.isArray(broker.cover_tags)) {
+      const matched = cover.filter(c => broker.cover_tags.includes(c))
+      score += Math.min(matched.length * 2, 4)
+    }
     if (cover.includes('not_sure')) score += 1
   }
 
-  if (size) {
-    if (sizeTags.includes(size)) score += 3
+  if (size && broker.size_tags) {
+    if (Array.isArray(broker.size_tags) && broker.size_tags.includes(size)) score += 3
   }
 
   if (state && broker.states_fit) {
@@ -130,12 +127,11 @@ export default function CompareForm() {
 
   useEffect(() => {
     async function fetchBrokers() {
-      const { data, error } = await supabase
+      const { data } = await supabase
         .from('brokers')
         .select('*')
         .eq('hidden', false)
       if (data) setBrokers(data)
-      if (error) console.error('Supabase error:', error)
     }
     fetchBrokers()
   }, [])
@@ -193,10 +189,10 @@ export default function CompareForm() {
         Find your match
       </div>
       <h2 className="section-title" style={{ textAlign: 'center' }}>
-        Find your matched brokers
+        Get matched to a specialist broker
       </h2>
       <p className="section-sub" style={{ textAlign: 'center', margin: '0 auto' }}>
-        Tell us about your business and we'll match you with the brokers best suited to your trade, size and location.
+        Five questions. 60 seconds. We'll show you brokers who specialise in your trade and know your state's requirements.
       </p>
 
       <div style={{
@@ -241,15 +237,15 @@ export default function CompareForm() {
           <div style={{ padding: '36px 40px 40px' }}>
             <h3 style={{ fontSize: '1.4rem', fontWeight: 700, marginBottom: '0.4rem' }}>
               {results.length === 0
-                ? 'No close matches found'
+                ? 'We couldn\'t find a close match'
                 : results.length === 1
-                ? '1 broker matched your profile'
-                : `${results.length} brokers matched your profile`}
+                ? 'We found 1 broker for you'
+                : `We found ${results.length} brokers for you`}
             </h3>
             <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '2rem' }}>
               {results.length === 0
-                ? 'Try broadening your cover selection.'
-                : 'Based on your trade type, cover needs, size and location'}
+                ? 'Try selecting fewer cover types or choose \'Not sure\' — we\'ll widen the search.'
+                : 'Matched to your trade, cover needs, team size and state'}
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -284,7 +280,7 @@ export default function CompareForm() {
                     {broker.description}
                   </p>
                   <p style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '1rem', lineHeight: 1.5 }}>
-                    This broker covers your trade type and stated insurance needs. Contact them directly to discuss your specific requirements and get a quote.
+                    This broker specialises in your trade and covers what you need. Give them a call or visit their website to talk through your situation and get a quote.
                   </p>
                   <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                     {broker.phone && (
@@ -312,9 +308,7 @@ export default function CompareForm() {
               background: 'rgba(255,255,255,0.03)', borderRadius: '8px',
             }}>
               <p style={{ fontSize: '0.75rem', color: '#64748b', lineHeight: 1.6 }}>
-                This tool filters brokers based on the information you provided. It is not financial advice.
-                Each broker listed holds an AFSL or is an authorised representative.
-                Contact brokers directly to discuss your specific needs.{' '}
+                This tool matches brokers to your answers — it's not financial advice. Every broker listed is required to hold an AFSL or operate as an authorised representative, however we recommend you verify credentials at moneysmart.gov.au.{' '}
                 <a href="/how-matching-works" style={{ color: '#94a3b8' }}>How matching works →</a>
               </p>
             </div>
