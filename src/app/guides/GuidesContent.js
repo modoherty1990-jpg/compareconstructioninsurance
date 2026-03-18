@@ -1,35 +1,29 @@
 'use client'
-
-const GUIDES = [
-  {
-    category: 'General guides',
-    items: [
-      { title: 'Tradie insurance guide', desc: 'Everything a tradie needs to know about insurance in Australia.', href: '/guides/tradie-insurance-guide' },
-      { title: 'Builder insurance guide', desc: 'A complete guide to insurance for licensed builders.', href: '/guides/builder-insurance-guide' },
-      { title: 'Contractor insurance brokers', desc: 'How to find the right broker for your contracting business.', href: '/guides/contractor-insurance-brokers' },
-      { title: 'Construction insurance brokers', desc: 'What to look for in a specialist construction insurance broker.', href: '/guides/construction-insurance-brokers' },
-    ]
-  },
-  {
-    category: 'Cover types',
-    items: [
-      { title: 'Public liability insurance for builders', desc: 'What it covers, how much you need and what it costs.', href: '/guides/public-liability-insurance-builders' },
-      { title: 'Contract works insurance', desc: 'Protecting your project from damage during construction.', href: '/guides/contract-works-insurance-guide' },
-      { title: 'Professional indemnity for builders', desc: 'When you need PI cover and what it protects against.', href: '/guides/professional-indemnity-insurance-builders' },
-      { title: 'Tools insurance for tradies', desc: 'Covering your tools against theft, loss and damage.', href: '/guides/tools-insurance-tradies' },
-      { title: 'Workers compensation in construction', desc: 'Your obligations as an employer in the construction industry.', href: '/guides/workers-compensation-insurance-construction' },
-    ]
-  },
-  {
-    category: 'Trade specific',
-    items: [
-      { title: 'Electrician insurance Australia', desc: 'Insurance requirements and costs for licensed electricians.', href: '/guides/insurance-electrician-australia' },
-      { title: 'Plumber insurance Australia', desc: 'What insurance plumbers need and how to get the best deal.', href: '/guides/insurance-plumber-australia' },
-    ]
-  },
-]
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
 
 export default function GuidesContent() {
+  const [guides, setGuides] = useState([])
+
+  useEffect(() => {
+    async function fetchGuides() {
+      const { data } = await supabase
+        .from('guides')
+        .select('slug, title, description, category')
+        .eq('published', true)
+        .order('created_at', { ascending: false })
+      if (data) setGuides(data)
+    }
+    fetchGuides()
+  }, [])
+
+  const grouped = guides.reduce((acc, guide) => {
+    const cat = guide.category || 'General guides'
+    if (!acc[cat]) acc[cat] = []
+    acc[cat].push(guide)
+    return acc
+  }, {})
+
   return (
     <section style={{ maxWidth: '900px', margin: '0 auto', padding: '80px 5%' }}>
       <div className="section-label">Resources</div>
@@ -41,24 +35,28 @@ export default function GuidesContent() {
         Insurance guides for builders & tradies
       </h1>
       <p style={{ color: '#8faabf', fontSize: '1.05rem', lineHeight: 1.7, maxWidth: '560px', marginBottom: '4rem' }}>
-        Plain English guides to construction and trades insurance in Australia. No jargon, no upselling — just the information you need.
+        Plain English guides to construction and trades insurance in Australia. Written for tradies, not lawyers.
       </p>
 
-      {GUIDES.map(group => (
-        <div key={group.category} style={{ marginBottom: '3rem' }}>
+      {guides.length === 0 && (
+        <p style={{ color: '#64748b', fontSize: '0.95rem' }}>More guides coming soon.</p>
+      )}
+
+      {Object.entries(grouped).map(([category, items]) => (
+        <div key={category} style={{ marginBottom: '3rem' }}>
           <h2 style={{
             fontSize: '0.75rem', fontWeight: 700,
             letterSpacing: '0.1em', textTransform: 'uppercase',
             color: '#f59e0b', marginBottom: '1.5rem',
-          }}>{group.category}</h2>
+          }}>{category}</h2>
 
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
             gap: '1rem',
           }}>
-            {group.items.map(guide => (
-              <a key={guide.href} href={guide.href} style={{
+            {items.map(guide => (
+              <a key={guide.slug} href={`/guides/${guide.slug}`} style={{
                 background: '#1a2733',
                 border: '1px solid rgba(255,255,255,0.08)',
                 borderRadius: '12px',
