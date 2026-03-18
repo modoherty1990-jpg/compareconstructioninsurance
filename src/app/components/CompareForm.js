@@ -284,19 +284,23 @@ export default function CompareForm() {
                   </p>
                   <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
                     {broker.phone && (
-                      <a href={`tel:${broker.phone}`} style={{
-                        background: '#f59e0b', color: '#0f1923',
-                        padding: '10px 20px', borderRadius: '8px',
-                        fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none',
-                      }}>📞 {broker.phone}</a>
+<a href={`tel:${broker.phone}`}
+  onClick={() => window.gtag && window.gtag('event', 'broker_click', { broker_name: broker.name, click_type: 'phone' })}
+  style={{
+    background: '#f59e0b', color: '#0f1923',
+    padding: '10px 20px', borderRadius: '8px',
+    fontWeight: 700, fontSize: '0.875rem', textDecoration: 'none',
+  }}>📞 {broker.phone}</a>
                     )}
                     {broker.website && (
-                      <a href={broker.website} target="_blank" rel="noopener noreferrer" style={{
-                        background: 'transparent', color: '#cbd5e1',
-                        padding: '10px 20px', borderRadius: '8px',
-                        fontWeight: 500, fontSize: '0.875rem',
-                        border: '1px solid rgba(255,255,255,0.08)', textDecoration: 'none',
-                      }}>Visit website ↗</a>
+<a href={broker.website} target="_blank" rel="noopener noreferrer"
+  onClick={() => window.gtag && window.gtag('event', 'broker_click', { broker_name: broker.name, click_type: 'website' })}
+  style={{
+    background: 'transparent', color: '#cbd5e1',
+    padding: '10px 20px', borderRadius: '8px',
+    fontWeight: 500, fontSize: '0.875rem',
+    border: '1px solid rgba(255,255,255,0.08)', textDecoration: 'none',
+  }}>Visit website ↗</a>
                     )}
                   </div>
                 </div>
