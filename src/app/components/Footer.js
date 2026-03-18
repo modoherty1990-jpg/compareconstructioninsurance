@@ -1,6 +1,23 @@
 'use client'
+import { useState, useEffect } from 'react'
+import { supabase } from '../lib/supabase'
 
 export default function Footer() {
+  const [guides, setGuides] = useState([])
+
+  useEffect(() => {
+    async function fetchGuides() {
+      const { data } = await supabase
+        .from('guides')
+        .select('slug, title')
+        .eq('published', true)
+        .order('created_at', { ascending: false })
+        .limit(5)
+      if (data) setGuides(data)
+    }
+    fetchGuides()
+  }, [])
+
   return (
     <footer style={{
       background: '#0a1420',
@@ -34,8 +51,7 @@ export default function Footer() {
             fontSize: '0.875rem', color: '#64748b',
             lineHeight: 1.7, marginBottom: '1rem', maxWidth: '280px',
           }}>
-            Australia's specialist construction insurance broker comparison platform.
-            Connecting builders, tradies and contractors with the right broker.
+            We help Australian builders, tradies and contractors find specialist insurance brokers who know their trade. Free to use, no obligation.
           </p>
           <a href="mailto:hello@compareconstructioninsurance.com.au" style={{
             fontSize: '0.875rem', color: '#94a3b8',
@@ -80,7 +96,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Guides col */}
+        {/* Guides col — live from Supabase */}
         <div>
           <h4 style={{
             fontSize: '0.8rem', fontWeight: 700,
@@ -88,23 +104,26 @@ export default function Footer() {
             color: '#94a3b8', marginBottom: '1rem',
           }}>Guides</h4>
           <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-            {[
-              { label: 'Public liability', href: '/guides' },
-{ label: 'Contract works', href: '/guides' },
-{ label: 'Professional indemnity', href: '/guides' },
-{ label: 'Tools insurance', href: '/guides' },
-{ label: 'All guides →', href: '/guides' },
-            ].map(link => (
-              <li key={link.label}>
-                <a href={link.href} style={{
+            {guides.map(guide => (
+              <li key={guide.slug}>
+                <a href={`/guides/${guide.slug}`} style={{
                   fontSize: '0.875rem', color: '#64748b',
                   textDecoration: 'none', transition: 'color 0.2s',
                 }}
                 onMouseEnter={e => e.target.style.color = '#cbd5e1'}
                 onMouseLeave={e => e.target.style.color = '#64748b'}
-                >{link.label}</a>
+                >{guide.title}</a>
               </li>
             ))}
+            <li>
+              <a href="/guides" style={{
+                fontSize: '0.875rem', color: '#64748b',
+                textDecoration: 'none', transition: 'color 0.2s',
+              }}
+              onMouseEnter={e => e.target.style.color = '#cbd5e1'}
+              onMouseLeave={e => e.target.style.color = '#64748b'}
+              >All guides →</a>
+            </li>
           </ul>
         </div>
 
