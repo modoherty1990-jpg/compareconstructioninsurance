@@ -102,7 +102,7 @@ export default function Hero() {
         <a href="#brokers" className="btn-secondary">Browse all brokers</a>
       </div>
 
-      <div style={{
+      <div className="hero-stats" style={{
         position: 'absolute', right: '5%', bottom: '10%',
         display: 'flex', flexDirection: 'column', gap: '1rem',
         animation: 'fadeLeft 0.8s 0.5s ease both',
