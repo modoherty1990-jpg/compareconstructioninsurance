@@ -3,32 +3,26 @@
 export default function WhyUs() {
   const cards = [
     {
-      icon: '🛡️',
       title: 'Licensed brokers only',
       desc: 'Every broker on this site is licensed under an AFSL. You can check any broker\'s credentials at moneysmart.gov.au.',
     },
     {
-      icon: '🎯',
       title: 'Specialist matching',
       desc: 'We score brokers against your trade, your cover needs, your team size and your state. You only see brokers who are actually relevant to your work — not just the nearest option.',
     },
     {
-      icon: '💰',
       title: 'Completely free',
       desc: 'It costs you nothing to use this site. We may receive a fee from brokers if you end up working with them — but it never affects your match results. Your ranking is based on fit, not who pays us more.',
     },
     {
-      icon: '🔒',
       title: 'Your data is protected',
       desc: 'We only collect what we need to match you to a broker. We don\'t sell your data to anyone.',
     },
     {
-      icon: '⚡',
       title: 'Fast and no obligation',
       desc: 'Five questions. 60 seconds. No account, no signup, no pressure. Contact the broker directly — you\'re under no obligation to go any further.',
     },
     {
-      icon: '🇦🇺',
       title: 'Australia-wide',
       desc: 'We cover every state and territory. Most brokers on our platform work nationally — and we\'ve got specialists for state-specific requirements.',
     },
@@ -59,7 +53,6 @@ export default function WhyUs() {
           onMouseEnter={e => e.currentTarget.style.borderColor = 'rgba(245,158,11,0.3)'}
           onMouseLeave={e => e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'}
           >
-            <div style={{ fontSize: '1.8rem', marginBottom: '1rem' }}>{card.icon}</div>
             <h3 style={{
               fontSize: '1rem', fontWeight: 700,
               marginBottom: '0.6rem', color: '#ffffff',
