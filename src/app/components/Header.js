@@ -13,7 +13,7 @@ export default function Header() {
 
   const links = [
     { label: 'Compare', href: '#compare' },
-    { label: 'Brokers', href: '#brokers' },
+    { label: 'Brokers', href: '/brokers' },
     { label: 'Why Us', href: '#why' },
     { label: 'FAQ', href: '#faq' },
     { label: 'Guides', href: '/guides' },
