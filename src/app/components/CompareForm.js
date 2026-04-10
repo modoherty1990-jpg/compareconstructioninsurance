@@ -95,29 +95,34 @@ function scoreBroker(broker, formData) {
   const size = formData.size
   const state = formData.state
 
+  // Trade match — most important signal (max 4)
   if (trade && broker.trade_tags) {
     if (Array.isArray(broker.trade_tags) && broker.trade_tags.includes(trade)) score += 4
-    else if (trade === 'not_sure') score += 2
+    else if (trade === 'not_sure') score += 1
   }
 
-  if (cover.length > 0 && broker.cover_tags) {
-    if (Array.isArray(broker.cover_tags)) {
-      const matched = cover.filter(c => broker.cover_tags.includes(c))
-      score += Math.min(matched.length * 2, 4)
-    }
-    if (cover.includes('not_sure')) score += 1
+  // Cover match — up to 2 points per cover type matched, max 4
+  if (cover.length > 0 && broker.cover_tags && Array.isArray(broker.cover_tags)) {
+    const matched = cover.filter(c => c !== 'not_sure' && broker.cover_tags.includes(c))
+    score += Math.min(matched.length * 2, 4)
   }
 
+  // Size match (max 3)
   if (size && broker.size_tags) {
     if (Array.isArray(broker.size_tags) && broker.size_tags.includes(size)) score += 3
   }
 
+  // State match (max 2) — national brokers only score if they also match on trade or size
   if (state && broker.states_fit) {
-    if (broker.states_fit === 'national' || broker.states_fit.includes(state)) score += 2
+    const stateMatch = broker.states_fit === 'national'
+      ? (score >= 4) // national brokers only get state bonus if they already have a real match
+      : broker.states_fit.includes(state)
+    if (stateMatch) score += 2
   }
 
-  if (broker.specialist_bonus) score += 2
-  score += (broker.priority || 0) * 0.1
+  // specialist_bonus and priority used only as tiebreaker — not counted toward MIN_SCORE threshold
+  const tiebreaker = (broker.specialist_bonus ? 0.5 : 0) + (broker.priority || 0) * 0.02
+  score += tiebreaker
 
   return score
 }
