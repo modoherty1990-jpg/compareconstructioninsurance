@@ -12,7 +12,7 @@ export default function Header() {
   }, [])
 
   const links = [
-    { label: 'Compare', href: '#compare' },
+    { label: 'Compare', onClick: () => document.dispatchEvent(new CustomEvent('startJourney')) },
     { label: 'Brokers', href: '/brokers' },
     { label: 'Why Us', href: '#why' },
     { label: 'FAQ', href: '#faq' },
@@ -55,23 +55,39 @@ export default function Header() {
         }}>
           {links.map(link => (
             <li key={link.label}>
-              <a href={link.href} style={{
-                color: '#cbd5e1', textDecoration: 'none',
-                fontSize: '0.875rem', fontWeight: 500,
-                transition: 'color 0.2s',
-              }}
-              onMouseEnter={e => e.target.style.color = '#ffffff'}
-              onMouseLeave={e => e.target.style.color = '#cbd5e1'}
-              >{link.label}</a>
+              {link.onClick ? (
+                <button
+                  onClick={link.onClick}
+                  style={{
+                    background: 'none', border: 'none', padding: 0,
+                    color: '#cbd5e1', textDecoration: 'none',
+                    fontSize: '0.875rem', fontWeight: 500,
+                    transition: 'color 0.2s', cursor: 'pointer',
+                  }}
+                  onMouseEnter={e => e.target.style.color = '#ffffff'}
+                  onMouseLeave={e => e.target.style.color = '#cbd5e1'}
+                >{link.label}</button>
+              ) : (
+                <a href={link.href} style={{
+                  color: '#cbd5e1', textDecoration: 'none',
+                  fontSize: '0.875rem', fontWeight: 500,
+                  transition: 'color 0.2s',
+                }}
+                onMouseEnter={e => e.target.style.color = '#ffffff'}
+                onMouseLeave={e => e.target.style.color = '#cbd5e1'}
+                >{link.label}</a>
+              )}
             </li>
           ))}
         </ul>
 
-        <a href="#compare" className="btn-primary desktop-cta" style={{
-          padding: '8px 20px', fontSize: '0.875rem',
-        }}>
-          Compare Now
-        </a>
+        <button
+          className="btn-primary desktop-cta"
+          style={{ padding: '8px 20px', fontSize: '0.875rem' }}
+          onClick={() => document.dispatchEvent(new CustomEvent('startJourney'))}
+        >
+          Find My Broker
+        </button>
 
         <button
           onClick={() => setMenuOpen(!menuOpen)}
@@ -115,7 +131,19 @@ export default function Header() {
           padding: '1.5rem 5%',
           display: 'flex', flexDirection: 'column',
         }}>
-          {links.map(link => (
+          {links.map(link => link.onClick ? (
+            <button key={link.label}
+              onClick={() => { setMenuOpen(false); link.onClick() }}
+              style={{
+                background: 'none', border: 'none', textAlign: 'left',
+                color: '#cbd5e1', textDecoration: 'none',
+                fontSize: '1rem', fontWeight: 500,
+                padding: '1rem 0',
+                borderBottom: '1px solid rgba(255,255,255,0.06)',
+                cursor: 'pointer',
+              }}
+            >{link.label}</button>
+          ) : (
             <a key={link.label} href={link.href}
               onClick={() => setMenuOpen(false)}
               style={{
@@ -126,12 +154,13 @@ export default function Header() {
               }}
             >{link.label}</a>
           ))}
-          <a href="#compare" className="btn-primary"
+          <button
+            className="btn-primary"
             style={{ marginTop: '1.5rem', textAlign: 'center' }}
-            onClick={() => setMenuOpen(false)}
+            onClick={() => { setMenuOpen(false); document.dispatchEvent(new CustomEvent('startJourney')) }}
           >
-            Compare Now
-          </a>
+            Find My Broker
+          </button>
         </div>
       )}
 

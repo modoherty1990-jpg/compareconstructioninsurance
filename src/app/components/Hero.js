@@ -98,8 +98,13 @@ export default function Hero() {
         display: 'flex', gap: '1rem', flexWrap: 'wrap',
         animation: 'fadeUp 0.6s 0.4s ease both',
       }}>
-        <a href="#compare" className="btn-primary">Find My Broker →</a>
-        <a href="#brokers" className="btn-secondary">Browse all brokers</a>
+        <button
+          className="btn-primary"
+          onClick={() => document.dispatchEvent(new CustomEvent('startJourney'))}
+        >
+          Find My Broker →
+        </button>
+        <a href="/brokers" className="btn-secondary">Browse all brokers</a>
       </div>
 
       <div className="hero-stats" style={{
