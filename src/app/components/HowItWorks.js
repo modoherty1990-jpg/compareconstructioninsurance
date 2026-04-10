@@ -30,7 +30,7 @@ export default function HowItWorks() {
       borderBottom: '1px solid rgba(255,255,255,0.08)',
     }}>
       <div style={{ marginBottom: '1rem' }} className="section-label">How it works</div>
-      <h2 className="section-title">How it works — four steps</h2>
+      <h2 className="section-title">How it works. Four steps.</h2>
       <p className="section-sub">
         Answer five questions. We match you. You call the broker. Done.
       </p>

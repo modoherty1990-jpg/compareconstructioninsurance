@@ -4,18 +4,18 @@ import { useState } from 'react'
 const FAQS = [
   {
     q: 'Is this really free to use?',
-    a: 'Yes — it\'s free for tradies and builders. We may receive a referral fee from a broker if you end up working with them, but this never affects your match results and you won\'t pay a cent more for your insurance.',
+    a: 'Yes, it\'s free for tradies and builders. We may receive a referral fee from a broker if you end up working with them, but this never affects your match results and you won\'t pay a cent more for your insurance.',
   },
   {
     q: 'How do you match me with brokers?',
-    a: 'We run your answers through our matching system, which scores every broker against your trade type, cover needs, business size and state. You only see brokers who scored above our minimum threshold — so they\'re actually relevant to your situation.',
+    a: 'We run your answers through our matching system, which scores every broker against your trade type, cover needs, business size and state. You only see brokers who scored above our minimum threshold, so they\'re actually relevant to your situation.',
   },
   {
     q: 'Is this financial advice?',
-    a: 'No. This tool helps you find licensed brokers who are relevant to your profile — it\'s not financial advice. The broker you contact is the one who\'ll assess your situation properly. Always read their Financial Services Guide before making any decisions.',
+    a: 'No. This tool helps you find licensed brokers who are relevant to your profile. It\'s not financial advice. The broker you contact is the one who\'ll assess your situation properly. Always read their Financial Services Guide before making any decisions.',
   },
   {
-    q: 'I don\'t know what insurance I need — what should I do?',
+    q: 'I don\'t know what insurance I need. What should I do?',
     a: 'Select \'Not sure\' in the cover step and we\'ll match you with brokers who carry a broad range of construction covers and can work out what\'s right for your trade. That\'s exactly what a good broker is there for.',
   },
   {
@@ -24,7 +24,7 @@ const FAQS = [
   },
   {
     q: 'How quickly will a broker get back to me?',
-    a: 'Most brokers aim to get back to you within one business day. If you need cover urgently — like a certificate of currency before you start a job tomorrow — mention it when you make contact. Most can sort same-day cover for standard policies.',
+    a: 'Most brokers aim to get back to you within one business day. If you need cover urgently, like a certificate of currency before you start a job tomorrow, mention it when you make contact. Most can sort same-day cover for standard policies.',
   },
   {
     q: 'Can I see insurance prices before I contact a broker?',

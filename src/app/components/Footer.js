@@ -167,7 +167,7 @@ export default function Footer() {
         gap: '1rem',
       }}>
         <span style={{ fontSize: '0.8rem', color: '#475569' }}>
-          © 2026 compareconstructioninsurance.com.au — All rights reserved
+          © 2026 compareconstructioninsurance.com.au. All rights reserved
         </span>
         <span style={{ fontSize: '0.8rem', color: '#475569' }}>
           This site does not provide financial advice. Always read the FSG before proceeding.

@@ -49,7 +49,7 @@ export default function Hero() {
         color: '#ffffff',
       }}>
         Find the right construction insurance broker for your{' '}
-        <em style={{ fontStyle: 'normal', color: '#f59e0b' }}>trade — matched in 60 seconds</em>
+        <em style={{ fontStyle: 'normal', color: '#f59e0b' }}>trade. Matched in 60 seconds.</em>
       </h1>
 
       <p style={{

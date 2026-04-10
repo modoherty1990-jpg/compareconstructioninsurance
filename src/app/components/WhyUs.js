@@ -8,11 +8,11 @@ export default function WhyUs() {
     },
     {
       title: 'Specialist matching',
-      desc: 'We score brokers against your trade, your cover needs, your team size and your state. You only see brokers who are actually relevant to your work — not just the nearest option.',
+      desc: 'We score brokers against your trade, your cover needs, your team size and your state. You only see brokers who are actually relevant to your work. Not just the nearest option.',
     },
     {
       title: 'Completely free',
-      desc: 'It costs you nothing to use this site. We may receive a fee from brokers if you end up working with them — but it never affects your match results. Your ranking is based on fit, not who pays us more.',
+      desc: 'It costs you nothing to use this site. We may receive a fee from brokers if you end up working with them, but it never affects your match results. Your ranking is based on fit, not who pays us more.',
     },
     {
       title: 'Your data is protected',
@@ -20,11 +20,11 @@ export default function WhyUs() {
     },
     {
       title: 'Fast and no obligation',
-      desc: 'Five questions. 60 seconds. No account, no signup, no pressure. Contact the broker directly — you\'re under no obligation to go any further.',
+      desc: 'Five questions. 60 seconds. No account, no signup, no pressure. Contact the broker directly. You\'re under no obligation to go any further.',
     },
     {
       title: 'Australia-wide',
-      desc: 'We cover every state and territory. Most brokers on our platform work nationally — and we\'ve got specialists for state-specific requirements.',
+      desc: 'We cover every state and territory. Most brokers on our platform work nationally and we\'ve got specialists for state-specific requirements.',
     },
   ]
 

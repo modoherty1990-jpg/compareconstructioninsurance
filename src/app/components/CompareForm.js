@@ -26,7 +26,7 @@ const STEPS = [
   {
     id: 2,
     question: 'What cover do you need?',
-    hint: 'Tick everything you need — we\'ll find brokers who cover the lot',
+    hint: 'Tick everything you need. We\'ll find brokers who cover the lot.',
     field: 'cover',
     multi: true,
     options: [
@@ -34,7 +34,7 @@ const STEPS = [
       { value: 'contract_works', label: 'Contract works', help: 'Covers damage to the build while it\'s in progress' },
       { value: 'professional_indemnity', label: 'Professional indemnity', help: 'Covers errors in your advice, design or certification' },
       { value: 'tools', label: 'Tools & equipment', help: 'Covers theft or damage to your tools' },
-      { value: 'workers_comp', label: 'Workers compensation', help: 'Required if you have employees — apprentices included' },
+      { value: 'workers_comp', label: 'Workers compensation', help: 'Required if you have employees, apprentices included' },
       { value: 'home_warranty', label: 'Home warranty', help: 'Required for residential builds above certain contract values' },
       { value: 'not_sure', label: 'Not sure', help: 'Show me what\'s relevant for my trade' },
     ],
@@ -55,7 +55,7 @@ const STEPS = [
   {
     id: 4,
     question: 'What\'s your annual revenue?',
-    hint: 'A rough estimate is fine — helps us match you to brokers who work with your size',
+    hint: 'A rough estimate is fine. Helps us match you to brokers who work with your size.',
     field: 'revenue',
     multi: false,
     options: [
@@ -68,7 +68,7 @@ const STEPS = [
   {
     id: 5,
     question: 'Which state are you based in?',
-    hint: 'Insurance requirements vary by state — this helps us find brokers who know your market',
+    hint: 'Insurance requirements vary by state. This helps us find brokers who know your market.',
     field: 'state',
     multi: false,
     options: [
@@ -244,7 +244,7 @@ export default function CompareForm() {
             </h3>
             <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '2rem' }}>
               {results.length === 0
-                ? 'Try selecting fewer cover types or choose \'Not sure\' — we\'ll widen the search.'
+                ? 'Try selecting fewer cover types or choose \'Not sure\'. We\'ll widen the search.'
                 : 'Matched to your trade, cover needs, team size and state'}
             </p>
 
@@ -312,7 +312,7 @@ export default function CompareForm() {
               background: 'rgba(255,255,255,0.03)', borderRadius: '8px',
             }}>
               <p style={{ fontSize: '0.75rem', color: '#64748b', lineHeight: 1.6 }}>
-                This tool matches brokers to your answers — it's not financial advice. Every broker listed is required to hold an AFSL or operate as an authorised representative, however we recommend you verify credentials at moneysmart.gov.au.{' '}
+                This tool matches brokers to your answers. It's not financial advice. Every broker listed is required to hold an AFSL or operate as an authorised representative, however we recommend you verify credentials at moneysmart.gov.au.{' '}
                 <a href="/how-matching-works" style={{ color: '#94a3b8' }}>How matching works →</a>
               </p>
             </div>

@@ -28,13 +28,13 @@ export default function HowMatchingWorks() {
                 signal: 'Trade type match',
                 points: '+4 points',
                 color: '#10b981',
-                desc: 'The strongest signal. If a broker specialises in your trade type — builder, tradie, civil contractor, consultant etc — they score 4 points. This is weighted highest because a broker who knows your industry will understand your risks, your contracts and your legal obligations far better than a generalist.'
+                desc: 'The strongest signal. If a broker specialises in your trade type (builder, tradie, civil contractor, consultant etc) they score 4 points. This is weighted highest because a broker who knows your industry will understand your risks, your contracts and your legal obligations far better than a generalist.'
               },
               {
                 signal: 'Cover match',
                 points: 'Up to +4 points',
                 color: '#f59e0b',
-                desc: 'For each type of cover you need that a broker can arrange, they score 2 points — up to a maximum of 4. So if you need public liability and contract works and a broker covers both, they score the full 4. This ensures brokers who can handle your complete insurance needs score higher than those who can only partially help.'
+                desc: 'For each type of cover you need that a broker can arrange, they score 2 points, up to a maximum of 4. So if you need public liability and contract works and a broker covers both, they score the full 4. This ensures brokers who can handle your complete insurance needs score higher than those who can only partially help.'
               },
               {
                 signal: 'Business size fit',
@@ -86,7 +86,7 @@ export default function HowMatchingWorks() {
               Specialist bonus
             </h2>
             <p style={{ color: '#8faabf', lineHeight: 1.8, fontSize: '0.95rem' }}>
-              Brokers who are dedicated construction specialists — meaning construction insurance is their primary focus rather than one of many categories — receive an additional 2 point bonus. This reflects the real-world advantage of working with a broker who lives and breathes your industry.
+              Brokers who are dedicated construction specialists, meaning construction insurance is their primary focus rather than one of many other categories, receive an additional 2 point bonus. This reflects the real-world advantage of working with a broker who lives and breathes your industry.
             </p>
           </div>
 
@@ -95,7 +95,7 @@ export default function HowMatchingWorks() {
               Minimum threshold
             </h2>
             <p style={{ color: '#8faabf', lineHeight: 1.8, fontSize: '0.95rem' }}>
-              A broker must score at least 3 points to appear in your results. This means a broker with no relevant trade experience, no matching cover types and no state presence will never appear — even if no strong matches exist. We would rather show you fewer results than show you irrelevant ones.
+              A broker must score at least 3 points to appear in your results. This means a broker with no relevant trade experience, no matching cover types and no state presence will never appear, even if no strong matches exist. We would rather show you fewer results than show you irrelevant ones.
             </p>
           </div>
 
@@ -115,7 +115,7 @@ export default function HowMatchingWorks() {
             padding: '1.5rem',
           }}>
             <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: 1.7 }}>
-              This tool is designed to help you find relevant brokers faster — not to replace professional advice. Once matched, contact your broker directly and ask them to explain what cover is right for your specific situation. Always read their Financial Services Guide before proceeding.
+              This tool is designed to help you find relevant brokers faster, not to replace professional advice. Once matched, contact your broker directly and ask them to explain what cover is right for your specific situation. Always read their Financial Services Guide before proceeding.
             </p>
           </div>
         </section>

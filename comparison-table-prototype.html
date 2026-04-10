@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Broker Comparison Table — Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --slate:       #0f1923;
+      --slate-mid:   #1a2733;
+      --slate-light: #243447;
+      --amber:       #f59e0b;
+      --amber-light: #fcd34d;
+      --white:       #ffffff;
+      --text-muted:  #94a3b8;
+      --text-body:   #cbd5e1;
+      --green:       #10b981;
+      --border:      rgba(255,255,255,0.08);
+      --radius:      12px;
+      --radius-lg:   20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--slate);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      padding: 60px 5%;
+    }
+
+    /* ── Header ── */
+    .prototype-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(245,158,11,0.12);
+      border: 1px solid rgba(245,158,11,0.3);
+      color: var(--amber);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 100px;
+      margin-bottom: 24px;
+    }
+    .prototype-label::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--amber);
+      animation: pulse 2s infinite;
+    }
+    .section-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      color: #a8bdd4;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 580px;
+      margin-bottom: 32px;
+    }
+    .note {
+      background: rgba(245,158,11,0.07);
+      border: 1px solid rgba(245,158,11,0.2);
+      border-radius: var(--radius);
+      padding: 14px 20px;
+      font-size: 0.84rem;
+      color: #c9a84c;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+    .note strong { color: var(--amber); }
+
+    /* ── Table wrapper ── */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--slate-mid);
+      /* Subtle shadow to hint at scrollability */
+      box-shadow: inset -40px 0 40px -20px rgba(0,0,0,0.4);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      /* Min width ensures columns don't squish — scroll kicks in instead */
+      min-width: 1100px;
+    }
+
+    /* ── Sticky broker column (left) ── */
+    .col-broker {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+      background: #1a2733;
+      min-width: 200px;
+      width: 200px;
+    }
+    thead .col-broker {
+      z-index: 3;
+    }
+
+    /* ── Column group headers ── */
+    thead tr.group-row th {
+      padding: 14px 8px 10px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+    thead tr.group-row .col-broker {
+      border-bottom: 1px solid var(--border);
+    }
+    /* Coloured top-border per group */
+    .group-cover  { border-top: 2px solid var(--green) !important; }
+    .group-trade  { border-top: 2px solid var(--amber) !important; }
+    .group-size   { border-top: 2px solid #818cf8 !important; }
+    .group-geo    { border-top: 2px solid #38bdf8 !important; }
+
+    /* ── Column label headers ── */
+    thead tr.label-row th {
+      padding: 10px 6px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #8faabf;
+      text-align: center;
+      vertical-align: bottom;
+      line-height: 1.3;
+      min-width: 72px;
+      max-width: 82px;
+      border-bottom: 1px solid var(--border);
+    }
+    thead tr.label-row .col-broker {
+      text-align: left;
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      padding-left: 20px;
+    }
+
+    /* ── Body rows ── */
+    tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.025); }
+    tbody tr:hover .col-broker { background: #1f2f3d; }
+
+    td {
+      padding: 14px 8px;
+      text-align: center;
+      vertical-align: middle;
+    }
+    td.col-broker {
+      text-align: left;
+      padding: 16px 20px;
+    }
+
+    /* ── Broker cell ── */
+    .broker-name {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 3px;
+      line-height: 1.3;
+    }
+    .broker-specialty {
+      font-size: 0.75rem;
+      color: var(--amber);
+      font-weight: 500;
+      line-height: 1.4;
+      margin-bottom: 5px;
+    }
+    .broker-states {
+      display: inline-block;
+      background: rgba(16,185,129,0.12);
+      border: 1px solid rgba(16,185,129,0.25);
+      color: var(--green);
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 100px;
+    }
+
+    /* ── Tick / Partial / Cross ── */
+    .tick {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: rgba(16,185,129,0.15);
+      border: 1.5px solid rgba(16,185,129,0.4);
+    }
+    .partial {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: rgba(245,158,11,0.1);
+      border: 1.5px solid rgba(245,158,11,0.3);
+    }
+    .cross {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px; height: 26px;
+    }
+    .cross-dash {
+      width: 11px; height: 2px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 2px;
+    }
+
+    /* thin vertical dividers between column groups */
+    .group-divider {
+      border-left: 1px solid rgba(255,255,255,0.07) !important;
+    }
+
+    /* ── CTA column ── */
+    td.cta-cell, th.cta-cell {
+      min-width: 110px;
+      width: 110px;
+      position: sticky;
+      right: 0;
+      background: #1a2733;
+      border-left: 1px solid var(--border);
+      z-index: 2;
+    }
+    thead .cta-cell { z-index: 3; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--amber);
+      color: #0f1923;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.76rem;
+      font-weight: 700;
+      padding: 8px 14px;
+      border-radius: var(--radius);
+      text-decoration: none;
+      transition: background 0.18s, transform 0.18s;
+      white-space: nowrap;
+    }
+    .cta-btn:hover {
+      background: var(--amber-light);
+      transform: translateY(-1px);
+    }
+    tbody tr:hover td.cta-cell { background: #1f2f3d; }
+
+    /* ── Legend ── */
+    .legend {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+      padding: 14px 20px;
+      background: var(--slate-mid);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      align-items: center;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Scroll hint arrow ── */
+    .scroll-hint {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .scroll-hint svg { opacity: 0.5; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="prototype-label">Prototype — Exploration Only</div>
+  <h2 class="section-title">Compare Brokers Side by Side</h2>
+  <p class="section-sub">See which brokers cover what — across insurance types, trade specialisations, business size, and location. No rankings, just the facts.</p>
+
+  <div class="note">
+    <strong>Note for Martin:</strong> Brokers are rows, features scroll right. The broker name column and the "Get matched" column both stay fixed as you scroll — so you always know which broker you're looking at. Representative data shown; live version pulls from Supabase.
+  </div>
+
+  <div class="scroll-hint">
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 8h10M9 4l4 4-4 4"/>
+    </svg>
+    Scroll right to see all coverage columns
+  </div>
+
+  <div class="table-wrapper">
+    <table>
+      <thead>
+
+        <!-- Row 1: Group labels spanning columns -->
+        <tr class="group-row">
+          <th class="col-broker"></th>
+
+          <!-- Cover Types -->
+          <th colspan="6" class="group-cover" style="color:#10b981;">Cover Types</th>
+
+          <!-- Trade Specialisations -->
+          <th colspan="7" class="group-trade group-divider" style="color:#f59e0b;">Trade Specialisations</th>
+
+          <!-- Business Size -->
+          <th colspan="4" class="group-size group-divider" style="color:#818cf8;">Business Size</th>
+
+          <!-- Geography -->
+          <th colspan="5" class="group-geo group-divider" style="color:#38bdf8;">Geography</th>
+
+          <th class="cta-cell"></th>
+        </tr>
+
+        <!-- Row 2: Individual column labels -->
+        <tr class="label-row">
+          <th class="col-broker">Broker</th>
+
+          <!-- Cover Types -->
+          <th>Public Liability</th>
+          <th>Contract Works</th>
+          <th>Prof. Indemnity</th>
+          <th>Tools &amp; Equipment</th>
+          <th>Workers' Comp</th>
+          <th>Home Warranty</th>
+
+          <!-- Trade Specialisations -->
+          <th class="group-divider">Builders</th>
+          <th>Tradies</th>
+          <th>Subcontractors</th>
+          <th>Civil</th>
+          <th>Consultants</th>
+          <th>Developers</th>
+          <th>Owner Builders</th>
+
+          <!-- Business Size -->
+          <th class="group-divider">Sole Trader</th>
+          <th>Small (2–5)</th>
+          <th>Medium (6–20)</th>
+          <th>Large (20+)</th>
+
+          <!-- Geography -->
+          <th class="group-divider">NSW</th>
+          <th>VIC</th>
+          <th>QLD</th>
+          <th>WA</th>
+          <th>SA/TAS/ACT/NT</th>
+
+          <th class="cta-cell" style="font-size:0.65rem;text-align:center;color:var(--text-muted);">GET MATCHED</th>
+        </tr>
+
+      </thead>
+      <tbody>
+
+        <!-- ── BROKER 1: Aon Construction ── -->
+        <tr>
+          <td class="col-broker">
+            <div class="broker-name">Aon Construction</div>
+            <div class="broker-specialty">Major projects &amp; developers</div>
+            <span class="broker-states">National</span>
+          </td>
+          <!-- Cover -->
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <!-- Trade -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <!-- Size -->
+          <td class="group-divider"><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <!-- Geo -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td class="cta-cell"><a class="cta-btn" href="#">Get matched</a></td>
+        </tr>
+
+        <!-- ── BROKER 2: Honan Insurance ── -->
+        <tr>
+          <td class="col-broker">
+            <div class="broker-name">Honan Insurance</div>
+            <div class="broker-specialty">Residential builders &amp; trades</div>
+            <span class="broker-states">National</span>
+          </td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <!-- Trade -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <!-- Size -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <!-- Geo -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td class="cta-cell"><a class="cta-btn" href="#">Get matched</a></td>
+        </tr>
+
+        <!-- ── BROKER 3: CHU Underwriting ── -->
+        <tr>
+          <td class="col-broker">
+            <div class="broker-name">CHU Underwriting</div>
+            <div class="broker-specialty">Owner builders &amp; small projects</div>
+            <span class="broker-states">NSW · VIC · QLD</span>
+          </td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <!-- Trade -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <!-- Size -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <!-- Geo -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td class="cta-cell"><a class="cta-btn" href="#">Get matched</a></td>
+        </tr>
+
+        <!-- ── BROKER 4: Coverforce ── -->
+        <tr>
+          <td class="col-broker">
+            <div class="broker-name">Coverforce</div>
+            <div class="broker-specialty">Sole traders &amp; tradies</div>
+            <span class="broker-states">National</span>
+          </td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <!-- Trade -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <!-- Size -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <!-- Geo -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td class="cta-cell"><a class="cta-btn" href="#">Get matched</a></td>
+        </tr>
+
+        <!-- ── BROKER 5: Marsh Advisory ── -->
+        <tr>
+          <td class="col-broker">
+            <div class="broker-name">Marsh Advisory</div>
+            <div class="broker-specialty">Civil &amp; infrastructure</div>
+            <span class="broker-states">National</span>
+          </td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <!-- Trade -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <!-- Size -->
+          <td class="group-divider"><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <!-- Geo -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td class="cta-cell"><a class="cta-btn" href="#">Get matched</a></td>
+        </tr>
+
+        <!-- ── BROKER 6: SureSafe Brokers ── -->
+        <tr>
+          <td class="col-broker">
+            <div class="broker-name">SureSafe Brokers</div>
+            <div class="broker-specialty">Subcontractors &amp; consultants</div>
+            <span class="broker-states">VIC · QLD · WA</span>
+          </td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <!-- Trade -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <!-- Size -->
+          <td class="group-divider"><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="partial"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span></td>
+          <!-- Geo -->
+          <td class="group-divider"><span class="cross"><span class="cross-dash"></span></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="tick"><svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span></td>
+          <td><span class="cross"><span class="cross-dash"></span></span></td>
+          <td class="cta-cell"><a class="cta-btn" href="#">Get matched</a></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div class="legend-item">
+      <span class="tick" style="width:22px;height:22px;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,7 6,11 12,3"/></svg></span>
+      Specialises in this
+    </div>
+    <div class="legend-item">
+      <span class="partial" style="width:22px;height:22px;flex-shrink:0;"><svg width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="11" y2="7"/></svg></span>
+      Available / select policies
+    </div>
+    <div class="legend-item">
+      <span class="cross" style="width:22px;height:22px;flex-shrink:0;"><span class="cross-dash"></span></span>
+      Not a focus area
+    </div>
+    <div class="legend-item" style="margin-left:auto; color: #5a7a94; font-size:0.76rem;">
+      Column groups coloured by category — scroll right to explore all
+    </div>
+  </div>
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(0.8); }
+  }
+
+</body>
+</html>
